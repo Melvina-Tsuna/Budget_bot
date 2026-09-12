@@ -125,7 +125,7 @@ export default function App() {
     <main style={{ maxWidth: 420, margin: '0 auto', padding: 16, fontFamily: 'system-ui' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
         <img
-          src="/img/logo.png"
+          src="/img/logo-96.png"
           alt="Logo BudgetBot"
           style={{ width: 42, height: 42, objectFit: 'contain', borderRadius: 10 }}
         />

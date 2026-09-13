@@ -1,9 +1,24 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { supabase, type WalletBalance } from './lib/supabase'
 import { signInWithTestUser } from './lib/testAuth'
 
 const fcfa = (n: number) =>
   new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 0 }).format(n) + ' F'
+
+const toFriendlyMessage = (e: unknown): string => {
+  const raw =
+    e instanceof Error ? e.message
+    : typeof e === 'object' && e !== null && 'message' in e ? String((e as { message: unknown }).message)
+    : String(e)
+
+  if (/failed to fetch/i.test(raw) || /network/i.test(raw)) {
+    return 'Impossible de contacter le serveur. Vérifie ta connexion internet et réessaie.'
+  }
+  if (/invalid login credentials/i.test(raw)) {
+    return 'Identifiants incorrects.'
+  }
+  return "Une erreur inattendue s'est produite. Réessaie dans un instant."
+}
 
 export default function App() {
   const [wallets, setWallets] = useState<WalletBalance[]>([])
@@ -41,18 +56,28 @@ export default function App() {
     setAuthMode(session.user.is_anonymous ? 'anonyme' : 'utilisateur')
   }
 
+  const loadAll = useCallback(async () => {
+    try {
+      await refreshAuthMode()
+      await loadWallets()
+      setError(null)
+    } catch (e) {
+      setError(toFriendlyMessage(e))
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  const retry = () => {
+    setLoading(true)
+    loadAll()
+  }
+
   useEffect(() => {
     ;(async () => {
-      try {
-        await refreshAuthMode()
-        await loadWallets()
-      } catch (e) {
-        setError(e instanceof Error ? e.message : String(e))
-      } finally {
-        setLoading(false)
-      }
+      await loadAll()
     })()
-  }, [])
+  }, [loadAll])
 
   const handleAnonymousLogin = async () => {
     setLoginStatus({ loading: true, message: null, error: null })
@@ -79,7 +104,7 @@ export default function App() {
       setLoginStatus({
         loading: false,
         message: null,
-        error: e instanceof Error ? e.message : String(e),
+        error: toFriendlyMessage(e),
       })
     }
   }
@@ -109,13 +134,45 @@ export default function App() {
       setLoginStatus({
         loading: false,
         message: null,
-        error: e instanceof Error ? e.message : String(e),
+        error: toFriendlyMessage(e),
       })
     }
   }
 
-  if (loading) return <main><p>Chargement…</p></main>
-  if (error) return <main><p style={{ color: 'crimson' }}>Erreur : {error}</p></main>
+  if (loading) {
+    return (
+      <main style={{ maxWidth: 420, margin: '0 auto', padding: 16, fontFamily: 'system-ui', textAlign: 'center' }}>
+        <div
+          style={{
+            width: 32,
+            height: 32,
+            margin: '80px auto 16px',
+            border: '3px solid #e5e7eb',
+            borderTopColor: '#2563eb',
+            borderRadius: '50%',
+            animation: 'spin 0.8s linear infinite',
+          }}
+        />
+        <style>{'@keyframes spin { to { transform: rotate(360deg) } }'}</style>
+        <p style={{ opacity: .6 }}>Chargement de tes soldes…</p>
+      </main>
+    )
+  }
+
+  if (error) {
+    return (
+      <main style={{ maxWidth: 420, margin: '0 auto', padding: 16, fontFamily: 'system-ui', textAlign: 'center' }}>
+        <p style={{ color: 'crimson', marginTop: 80 }}>{error}</p>
+        <button
+          type="button"
+          onClick={retry}
+          style={{ padding: '10px 14px', border: 'none', borderRadius: 8, background: '#111827', color: '#fff', fontWeight: 600, cursor: 'pointer' }}
+        >
+          Réessayer
+        </button>
+      </main>
+    )
+  }
 
   const byType = (t: string) => wallets.filter(w => w.type === t)
   const sum = (ws: WalletBalance[]) => ws.reduce((a, w) => a + Number(w.balance), 0)
@@ -209,7 +266,9 @@ export default function App() {
 
       {wallets.length === 0 && (
         <p style={{ opacity: .6, marginTop: 24 }}>
-          Aucun portefeuille. Normal : cette session anonyme est un nouvel utilisateur.
+          {authMode === 'anonyme'
+            ? 'Aucun portefeuille pour l\'instant — normal, cette session anonyme est nouvelle.'
+            : 'Aucun portefeuille pour ce compte.'}
         </p>
       )}
     </main>

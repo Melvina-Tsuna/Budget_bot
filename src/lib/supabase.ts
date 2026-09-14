@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import type { WalletType } from '../types'
 
 export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -8,6 +9,6 @@ export const supabase = createClient(
 export type WalletBalance = {
   wallet_id: string
   name: string
-  type: 'ESPECES' | 'VIRTUEL' | 'BANQUE'
+  type: WalletType
   balance: number
 }

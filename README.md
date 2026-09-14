@@ -15,14 +15,14 @@ Application de suivi de budget personnel (PWA) pensée pour l'Afrique de l'Ouest
 
 ## Configuration
 
-Crée un fichier `.env` à la racine avec :
+Copie `.env.example` vers `.env` à la racine et renseigne tes propres valeurs :
 
 ```
 VITE_SUPABASE_URL=https://<ton-projet>.supabase.co
 VITE_SUPABASE_ANON_KEY=<ta-clé-anon>
 ```
 
-Ce fichier n'est jamais commité (voir `.gitignore`).
+Le fichier `.env` n'est jamais commité (voir `.gitignore`).
 
 ## Scripts
 
@@ -33,6 +33,20 @@ Ce fichier n'est jamais commité (voir `.gitignore`).
 | `npm run lint` | Analyse statique du code (ESLint) |
 | `npm run preview` | Prévisualise le build de production |
 
-## Documentation du projet
+## Architecture
 
-Le dossier `docs/` (non versionné) contient la feuille de route, le schéma SQL, le prompt système de l'IA et le plan de tâches en cours.
+Le code applicatif vit dans `src/`, organisé par responsabilité :
+
+```
+src/
+  App.tsx           orchestrateur : choisit l'écran à afficher
+  hooks/            état et logique métier (useBudgetApp)
+  services/         appels Supabase (wallets, auth, users)
+  components/       éléments d'UI, un fichier par composant
+  lib/              client Supabase et types de données
+  utils/            fonctions utilitaires (formatage, messages d'erreur)
+  theme.ts          couleurs et constantes partagées
+  types.ts          types partagés (mode d'auth, statut de formulaire…)
+```
+
+`App.tsx` ne contient aucune logique métier : il assemble les composants et délègue l'état à `useBudgetApp`, qui lui-même délègue les appels réseau aux `services/`.

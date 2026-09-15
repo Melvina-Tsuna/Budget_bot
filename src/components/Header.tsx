@@ -10,7 +10,7 @@ function SessionAction({ mode, onClick }: { mode: AuthMode; onClick: () => void 
     <button
       type="button"
       onClick={onClick}
-      style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '6px 12px', borderRadius: 999, background: '#eef0f2', border: 'none', cursor: 'pointer' }}
+      style={{ display: 'flex', alignItems: 'center', gap: 6, minHeight: 44, padding: '0 14px', borderRadius: 999, background: '#eef0f2', border: 'none', cursor: 'pointer' }}
     >
       <span style={{ width: 7, height: 7, borderRadius: '50%', background: dotColor }} />
       <span style={{ fontSize: 12, fontWeight: 700, color: ACCENT }}>{isUser ? 'Se déconnecter' : 'Se connecter'}</span>

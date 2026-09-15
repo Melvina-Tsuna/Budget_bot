@@ -73,12 +73,12 @@ export function AddWalletForm({
         onChange={e => setName(e.target.value)}
         placeholder="Nom du portefeuille"
         maxLength={MAX_NAME_LENGTH}
-        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 14, fontFamily: 'inherit', color: INK }}
+        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 16, fontFamily: 'inherit', color: INK }}
       />
       <select
         value={type}
         onChange={e => setType(e.target.value as WalletType)}
-        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 14, fontFamily: 'inherit', color: INK, background: '#fff' }}
+        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 16, fontFamily: 'inherit', color: INK, background: '#fff' }}
       >
         {TYPE_OPTIONS.map(o => (
           <option key={o.value} value={o.value}>{o.label}</option>

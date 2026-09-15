@@ -41,7 +41,7 @@ export function LoginForm({
         onChange={e => setEmail(e.target.value)}
         placeholder="Adresse e-mail"
         autoComplete="email"
-        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 14, fontFamily: 'inherit', color: INK }}
+        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 16, fontFamily: 'inherit', color: INK }}
       />
       <input
         type="password"
@@ -49,7 +49,7 @@ export function LoginForm({
         onChange={e => setPassword(e.target.value)}
         placeholder="Mot de passe"
         autoComplete="current-password"
-        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 14, fontFamily: 'inherit', color: INK }}
+        style={{ padding: '10px 12px', borderRadius: 10, border: `1px solid ${BORDER}`, fontSize: 16, fontFamily: 'inherit', color: INK }}
       />
 
       {(validationError ?? error) && (

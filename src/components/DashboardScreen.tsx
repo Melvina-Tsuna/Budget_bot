@@ -5,22 +5,32 @@ import { BalanceCard } from './BalanceCard'
 import { WalletTypeSection } from './WalletTypeSection'
 import { EmptyWalletsState } from './EmptyWalletsState'
 import { AddWalletForm } from './AddWalletForm'
+import { TransactionHistory } from './TransactionHistory'
+import { AddTransactionForm } from './AddTransactionForm'
 import { TYPE_ORDER } from '../theme'
 import type { WalletBalance } from '../lib/supabase'
-import type { AuthMode, WalletType } from '../types'
+import type { AuthMode, TransactionRecord, WalletType } from '../types'
 
 export function DashboardScreen({
   authMode,
   wallets,
+  transactions,
   walletFormStatus,
+  txFormStatus,
   onLogout,
   onCreateWallet,
+  onCreateExpense,
+  onCreateIncome,
 }: {
   authMode: AuthMode
   wallets: WalletBalance[]
+  transactions: TransactionRecord[]
   walletFormStatus: { loading: boolean; error: string | null }
+  txFormStatus: { loading: boolean; error: string | null }
   onLogout: () => void
   onCreateWallet: (name: string, type: WalletType) => Promise<boolean>
+  onCreateExpense: (walletId: string, amount: number, category: string, description: string | null) => Promise<boolean>
+  onCreateIncome: (walletId: string, amount: number, description: string | null) => Promise<boolean>
 }) {
   const navigate = useNavigate()
 
@@ -47,6 +57,16 @@ export function DashboardScreen({
         error={walletFormStatus.error}
         onCreate={onCreateWallet}
       />
+
+      <AddTransactionForm
+        wallets={wallets}
+        loading={txFormStatus.loading}
+        error={txFormStatus.error}
+        onCreateExpense={onCreateExpense}
+        onCreateIncome={onCreateIncome}
+      />
+
+      <TransactionHistory transactions={transactions} />
     </Page>
   )
 }

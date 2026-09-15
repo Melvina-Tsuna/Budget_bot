@@ -32,17 +32,21 @@ function LoginRoute({
 export default function App() {
   const {
     wallets,
+    transactions,
     error,
     loading,
     authMode,
     signedOut,
     loginStatus,
     walletFormStatus,
+    txFormStatus,
     retry,
     handleAnonymousLogin,
     handleUserLogin,
     handleLogout,
     addWallet,
+    addExpense,
+    addIncome,
   } = useBudgetApp()
 
   if (loading) return <LoadingScreen />
@@ -66,9 +70,13 @@ export default function App() {
           <DashboardScreen
             authMode={authMode}
             wallets={wallets}
+            transactions={transactions}
             walletFormStatus={walletFormStatus}
+            txFormStatus={txFormStatus}
             onLogout={handleLogout}
             onCreateWallet={addWallet}
+            onCreateExpense={addExpense}
+            onCreateIncome={addIncome}
           />
         }
       />

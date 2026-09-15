@@ -17,3 +17,16 @@ export const TYPE_LABELS: Record<string, string> = {
 }
 
 export const TYPE_ORDER = ['VIRTUEL', 'ESPECES', 'BANQUE']
+
+export const EXPENSE_CATEGORIES = [
+  'Alimentation',
+  'Transport',
+  'Logement & Factures',
+  'Loisirs',
+  'Santé',
+  'Shopping',
+  'Famille & Obligations',
+  'Épargne',
+  'Non identifié',
+  'Autre',
+]

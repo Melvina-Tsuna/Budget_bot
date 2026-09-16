@@ -1,18 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ACCENT, BORDER, CARD, DANGER, EXPENSE_CATEGORIES, INK, MUTED } from '../theme'
 import type { WalletBalance } from '../lib/supabase'
 import type { TransactionType } from '../types'
+
+export type QuickExpenseTrigger = { category: string; nonce: number }
 
 export function AddTransactionForm({
   wallets,
   loading,
   error,
+  quickTrigger,
   onCreateExpense,
   onCreateIncome,
 }: {
   wallets: WalletBalance[]
   loading: boolean
   error: string | null
+  quickTrigger?: QuickExpenseTrigger | null
   onCreateExpense: (walletId: string, amount: number, category: string, description: string | null) => Promise<boolean>
   onCreateIncome: (walletId: string, amount: number, description: string | null) => Promise<boolean>
 }) {
@@ -23,6 +27,14 @@ export function AddTransactionForm({
   const [category, setCategory] = useState(EXPENSE_CATEGORIES[0])
   const [description, setDescription] = useState('')
   const [validationError, setValidationError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!quickTrigger) return
+    setType('EXPENSE')
+    setCategory(quickTrigger.category)
+    setOpen(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quickTrigger?.nonce])
 
   const close = () => {
     setOpen(false)

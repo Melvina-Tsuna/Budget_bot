@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Page } from './Page'
 import { Header } from './Header'
@@ -7,6 +8,8 @@ import { EmptyWalletsState } from './EmptyWalletsState'
 import { AddWalletForm } from './AddWalletForm'
 import { TransactionHistory } from './TransactionHistory'
 import { AddTransactionForm } from './AddTransactionForm'
+import type { QuickExpenseTrigger } from './AddTransactionForm'
+import { QuickExpenseIcons } from './QuickExpenseIcons'
 import { TYPE_ORDER } from '../theme'
 import type { WalletBalance } from '../lib/supabase'
 import type { AuthMode, TransactionRecord, WalletType } from '../types'
@@ -33,6 +36,7 @@ export function DashboardScreen({
   onCreateIncome: (walletId: string, amount: number, description: string | null) => Promise<boolean>
 }) {
   const navigate = useNavigate()
+  const [quickTrigger, setQuickTrigger] = useState<QuickExpenseTrigger | null>(null)
 
   const types = TYPE_ORDER.filter(t => wallets.some(w => w.type === t))
   const total = wallets.reduce((a, w) => a + Number(w.balance), 0)
@@ -44,6 +48,10 @@ export function DashboardScreen({
         onAction={authMode === 'utilisateur' ? onLogout : () => navigate('/login')}
       />
       <BalanceCard total={total} />
+
+      {wallets.length > 0 && (
+        <QuickExpenseIcons onSelect={category => setQuickTrigger({ category, nonce: Date.now() })} />
+      )}
 
       {types.map(type => (
         <WalletTypeSection key={type} type={type} wallets={wallets.filter(w => w.type === type)} />
@@ -62,6 +70,7 @@ export function DashboardScreen({
         wallets={wallets}
         loading={txFormStatus.loading}
         error={txFormStatus.error}
+        quickTrigger={quickTrigger}
         onCreateExpense={onCreateExpense}
         onCreateIncome={onCreateIncome}
       />

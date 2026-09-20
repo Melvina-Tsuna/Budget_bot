@@ -35,12 +35,12 @@ export function AddTransactionForm({
   const submit = async () => {
     const parsedAmount = Number(amount)
     if (!amount.trim() || Number.isNaN(parsedAmount) || parsedAmount <= 0) {
-      setValidationError('Indique un montant valide, supérieur à 0.')
+      setValidationError('Le montant doit être supérieur à 0.')
       return
     }
     const selectedWalletId = walletId || wallets[0]?.wallet_id
     if (!selectedWalletId) {
-      setValidationError('Ajoute d\'abord un portefeuille.')
+      setValidationError('Un portefeuille est nécessaire avant d\'ajouter une transaction.')
       return
     }
 

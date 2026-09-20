@@ -5,7 +5,7 @@ export const toFriendlyMessage = (e: unknown): string => {
     : String(e)
 
   if (/failed to fetch/i.test(raw) || /network/i.test(raw)) {
-    return 'Impossible de contacter le serveur. Vérifie ta connexion internet et réessaie.'
+    return 'Impossible de contacter le serveur. Connexion internet indisponible ?'
   }
   if (/invalid login credentials/i.test(raw)) {
     return 'Identifiants incorrects.'
@@ -13,5 +13,5 @@ export const toFriendlyMessage = (e: unknown): string => {
   if (/duplicate key value violates unique constraint/i.test(raw)) {
     return 'Un portefeuille porte déjà ce nom.'
   }
-  return "Une erreur inattendue s'est produite. Réessaie dans un instant."
+  return "Une erreur inattendue s'est produite."
 }

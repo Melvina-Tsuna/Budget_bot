@@ -36,7 +36,7 @@ export function AddWalletForm({
   const submit = async () => {
     const trimmed = name.trim()
     if (!trimmed) {
-      setValidationError('Donne un nom à ce portefeuille.')
+      setValidationError('Le nom du portefeuille est requis.')
       return
     }
     if (trimmed.length > MAX_NAME_LENGTH) {
@@ -67,6 +67,9 @@ export function AddWalletForm({
 
   return (
     <div style={{ background: CARD, border: `1px solid ${BORDER}`, borderRadius: 18, padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <p style={{ margin: 0, fontSize: 12.5, color: MUTED }}>
+        Chaque portefeuille correspond à un endroit où l'argent est gardé : liquide, compte mobile, banque.
+      </p>
       <input
         type="text"
         value={name}

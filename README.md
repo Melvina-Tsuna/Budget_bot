@@ -1,5 +1,13 @@
 # BudgetBot
 
+> **Refonte en cours.** Ce dépôt contient le prototype initial de BudgetBot,
+> en cours de reprise selon Scrum. Première livraison prévue : les fondations
+> du projet (normes de code, intégration continue, déploiement automatique).
+> Dossier Scrum disponible sur demande.
+
+**Product Goal :** permettre à un Béninois qui reçoit ses revenus de plusieurs
+sources de voir d'un coup d'œil ses dépenses et ce qui lui reste du mois.
+
 Application de suivi de budget personnel (PWA) pensée pour l'Afrique de l'Ouest (FCFA). L'application fonctionne entièrement sans IA — saisie manuelle des transactions et calcul des soldes par portefeuille — avec une couche de saisie en langage naturel prévue en complément.
 
 ## Stack
@@ -11,7 +19,7 @@ Application de suivi de budget personnel (PWA) pensée pour l'Afrique de l'Ouest
 ## Prérequis
 
 - Node.js 18+
-- Un projet Supabase avec le schéma défini dans `docs/budgetbot_schema.sql`
+- Un projet Supabase (schéma de base de données fourni sur demande)
 
 ## Configuration
 
